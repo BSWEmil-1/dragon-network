@@ -1,73 +1,63 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0b0014;
+    background: radial-gradient(circle at top, #2b0057, #0b0014);
     color: white;
+}
+
+/* ZENTRALER CONTAINER */
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 40px 20px;
     text-align: center;
 }
 
-/* BACKGROUND */
-#particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: #0b0014;
-}
-
-/* HEADER */
-.header {
-    padding: 80px 20px;
-    background: linear-gradient(135deg, #1a0033, #2b0057);
-}
-
-/* TITLE */
+/* TITEL */
 h1 {
-    font-size: 42px;
+    font-size: 44px;
     color: #c084fc;
-    text-shadow: 0 0 15px #a855f7;
+    text-shadow: 0 0 20px #a855f7;
 }
 
-/* STATUS */
-.status {
-    margin-top: 20px;
-    padding: 15px;
-    display: inline-block;
-    border-radius: 10px;
-    background: #1a0033;
-    box-shadow: 0 0 15px #a855f7;
+.subtitle {
+    color: #d1d1d1;
+    margin-bottom: 30px;
+}
+
+/* CARDS */
+.card {
+    background: rgba(26, 0, 51, 0.9);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 14px;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
 }
 
 /* IP BOX */
 .ip-box {
-    margin-top: 20px;
-    padding: 15px 20px;
-    display: inline-flex;
+    display: flex;
+    justify-content: center;
     align-items: center;
     gap: 10px;
-    border-radius: 12px;
-    background: #1a0033;
-    box-shadow: 0 0 15px #a855f7;
+    margin-top: 10px;
 }
 
-.ip-label {
-    color: #c084fc;
-    font-weight: bold;
-}
-
-.ip {
+.ip-box span {
     font-family: monospace;
     font-size: 18px;
     text-shadow: 0 0 10px #a855f7;
 }
 
 /* BUTTONS */
+.buttons {
+    margin-top: 20px;
+}
+
 .button {
     display: inline-block;
-    margin-top: 20px;
-    padding: 12px 25px;
+    margin: 10px;
+    padding: 12px 24px;
     background: #a855f7;
     color: white;
     text-decoration: none;
@@ -84,12 +74,20 @@ h1 {
     background: #ec4899;
 }
 
-/* COPY BUTTON */
-.copy-btn {
-    background: #a855f7;
-    border: none;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 8px;
-    cursor: pointer;
+/* MOBILE */
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .ip-box {
+        flex-direction: column;
+    }
+
+    .button {
+        display: block;
+        width: 80%;
+        margin: 10px auto;
+    }
 }
