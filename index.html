@@ -12,7 +12,7 @@
     <h1>Dragon Network</h1>
     <p class="subtitle">Willkommen auf der offiziellen Seite</p>
 
-    <!-- STATUS -->
+    <!-- SERVER STATUS -->
     <div class="card">
         <h2>📊 Server Status</h2>
         <p id="status">Lädt...</p>
@@ -25,7 +25,7 @@
 
         <div class="ip-box">
             <span id="ipText">minecraft.shadowra.de</span>
-            <button onclick="copyIP()">KOPIEREN</button>
+            <button class="copy-btn" onclick="copyIP()">KOPIEREN</button>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
 <script>
 const serverIP = "minecraft.shadowra.de";
 
-/* SERVER STATUS */
+/* STATUS */
 fetch(`https://api.mcsrvstat.us/2/${serverIP}`)
 .then(res => res.json())
 .then(data => {
@@ -63,14 +63,20 @@ fetch(`https://api.mcsrvstat.us/2/${serverIP}`)
 
 /* COPY IP */
 function copyIP() {
-    navigator.clipboard.writeText(document.getElementById("ipText").innerText);
+    const ip = document.getElementById("ipText").innerText;
+    navigator.clipboard.writeText(ip);
 
     const btn = event.target;
-    btn.innerText = "✔ KOPIERT";
+    btn.innerText = "✔ COPIED";
+
+    btn.style.background = "linear-gradient(135deg, #22c55e, #16a34a)";
+    btn.style.boxShadow = "0 0 20px rgba(34, 197, 94, 0.6)";
 
     setTimeout(() => {
         btn.innerText = "KOPIEREN";
-    }, 1500);
+        btn.style.background = "";
+        btn.style.boxShadow = "";
+    }, 1400);
 }
 </script>
 
