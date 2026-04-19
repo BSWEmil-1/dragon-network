@@ -7,37 +7,40 @@
 </head>
 <body>
 
-<!-- 🌌 BACKGROUND -->
-<canvas id="particles"></canvas>
+<div class="container">
 
-<div class="header">
     <h1>Dragon Network</h1>
-    <p>Willkommen auf der offiziellen Seite von Dragon Network</p>
+    <p class="subtitle">Willkommen auf der offiziellen Seite</p>
 
-    <!-- 📊 STATUS -->
-    <div class="status">
-        Server Status: <span id="status">Lädt...</span><br>
-        Spieler: <span id="players">-</span>
+    <!-- STATUS -->
+    <div class="card">
+        <h2>📊 Server Status</h2>
+        <p id="status">Lädt...</p>
+        <p>Spieler: <span id="players">-</span></p>
     </div>
 
-    <!-- 🌐 IP -->
-    <div class="ip-box">
-        <span class="ip-label">🌐 Server IP:</span>
-        <span class="ip" id="ipText">minecraft.shadowra.de</span>
-        <button class="copy-btn" onclick="copyIP()">KOPIEREN</button>
-    </div>
+    <!-- IP -->
+    <div class="card">
+        <h2>🌐 Server IP</h2>
 
-    <br>
+        <div class="ip-box">
+            <span id="ipText">minecraft.shadowra.de</span>
+            <button onclick="copyIP()">KOPIEREN</button>
+        </div>
+    </div>
 
     <!-- BUTTONS -->
-    <a class="button" href="discord.html">💬 Discord beitreten</a>
-    <a class="button donate" href="https://donate.shadowra.de/Minecraft/" target="_blank">💜 Spenden</a>
+    <div class="buttons">
+        <a class="button" href="discord.html">💬 Discord</a>
+        <a class="button donate" href="https://donate.shadowra.de/Minecraft/" target="_blank">💜 Spenden</a>
+    </div>
+
 </div>
 
 <script>
 const serverIP = "minecraft.shadowra.de";
 
-/* SERVER STATUS */
+/* STATUS */
 fetch(`https://api.mcsrvstat.us/2/${serverIP}`)
 .then(res => res.json())
 .then(data => {
@@ -47,146 +50,28 @@ fetch(`https://api.mcsrvstat.us/2/${serverIP}`)
 
     if (data.online) {
         status.innerHTML = "🟢 ONLINE";
-
-        const online = data.players?.online ?? 0;
-        const max = data.players?.max ?? 0;
-
-        players.innerHTML = `${online} / ${max}`;
+        players.innerHTML = `${data.players?.online ?? 0} / ${data.players?.max ?? 0}`;
     } else {
         status.innerHTML = "🔴 OFFLINE";
         players.innerHTML = "0 / 0";
     }
+
 })
 .catch(() => {
     document.getElementById("status").innerHTML = "⚠ Fehler";
-    document.getElementById("players").innerHTML = "-";
 });
 
 /* COPY IP */
 function copyIP() {
-    const ip = document.getElementById("ipText").innerText;
-    navigator.clipboard.writeText(ip);
+    navigator.clipboard.writeText(document.getElementById("ipText").innerText);
 
-    const btn = document.querySelector(".copy-btn");
+    const btn = event.target;
     btn.innerText = "✔ KOPIERT";
 
     setTimeout(() => {
         btn.innerText = "KOPIEREN";
     }, 1500);
 }
-
-/* 🌌 PARTICLES + MOUSE REACTION */
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particlesArray = [];
-
-const mouse = {
-    x: null,
-    y: null,
-    radius: 140
-};
-
-window.addEventListener("mousemove", (e) => {
-    mouse.x = e.x;
-    mouse.y = e.y;
-});
-
-window.addEventListener("mouseout", () => {
-    mouse.x = null;
-    mouse.y = null;
-});
-
-class Particle {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2;
-        this.baseX = this.x;
-        this.baseY = this.y;
-        this.density = (Math.random() * 30) + 1;
-    }
-
-    update() {
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-
-        let forceDirectionX = dx / distance;
-        let forceDirectionY = dy / distance;
-
-        let force = (mouse.radius - distance) / mouse.radius;
-
-        if (distance < mouse.radius) {
-            this.x -= forceDirectionX * force * this.density * 0.6;
-            this.y -= forceDirectionY * force * this.density * 0.6;
-        } else {
-            this.x += (this.baseX - this.x) / 10;
-            this.y += (this.baseY - this.y) / 10;
-        }
-    }
-
-    draw() {
-        ctx.fillStyle = "#a855f7";
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = "#a855f7";
-
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-    }
-}
-
-function connectParticles() {
-    for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
-
-            let dx = particlesArray[a].x - particlesArray[b].x;
-            let dy = particlesArray[a].y - particlesArray[b].y;
-            let distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < 120) {
-                ctx.strokeStyle = "rgba(168,85,247,0.12)";
-                ctx.lineWidth = 1;
-
-                ctx.beginPath();
-                ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                ctx.stroke();
-            }
-        }
-    }
-}
-
-function init() {
-    particlesArray = [];
-    for (let i = 0; i < 90; i++) {
-        particlesArray.push(new Particle());
-    }
-}
-
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let p of particlesArray) {
-        p.update();
-        p.draw();
-    }
-
-    connectParticles();
-    requestAnimationFrame(animate);
-}
-
-init();
-animate();
-
-window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
 </script>
 
 </body>
