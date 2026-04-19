@@ -12,7 +12,7 @@
     <h1>Dragon Network</h1>
     <p class="subtitle">Willkommen auf der offiziellen Seite</p>
 
-    <!-- SERVER STATUS -->
+    <!-- STATUS -->
     <div class="card">
         <h2>📊 Server Status</h2>
         <p id="status">Lädt...</p>
@@ -40,7 +40,7 @@
 <script>
 const serverIP = "minecraft.shadowra.de";
 
-/* STATUS */
+/* SERVER STATUS */
 fetch(`https://api.mcsrvstat.us/2/${serverIP}`)
 .then(res => res.json())
 .then(data => {
@@ -61,21 +61,19 @@ fetch(`https://api.mcsrvstat.us/2/${serverIP}`)
     document.getElementById("status").innerHTML = "⚠ Fehler";
 });
 
-/* COPY IP */
+/* COPY IP (FIXED) */
 function copyIP() {
     const ip = document.getElementById("ipText").innerText;
     navigator.clipboard.writeText(ip);
 
     const btn = event.target;
+
+    btn.classList.add("copied");
     btn.innerText = "✔ COPIED";
 
-    btn.style.background = "linear-gradient(135deg, #22c55e, #16a34a)";
-    btn.style.boxShadow = "0 0 20px rgba(34, 197, 94, 0.6)";
-
     setTimeout(() => {
+        btn.classList.remove("copied");
         btn.innerText = "KOPIEREN";
-        btn.style.background = "";
-        btn.style.boxShadow = "";
     }, 1400);
 }
 </script>
